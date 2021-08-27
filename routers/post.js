@@ -92,14 +92,11 @@ router.route('/timeline/:id')
 .get(async(req,res)=>{
  try{ const currentUser = await UserModel.findById(req.params.id)
   const currentUserPost = await Post.find({userId:currentUser._id})
-  // console.log(currentUserPost)
   const friendzPost=await Promise.all(
     currentUser.following.map((friendsId)=>{
       return Post.find({userId:friendsId})
     })
   )
-  // console.log(friendzPost)
-  // console.log(...friendzPost)
   res.json(currentUserPost.concat(...friendzPost))
   }catch(err){
    res.json(err)
